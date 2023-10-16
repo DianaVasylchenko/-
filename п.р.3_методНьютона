@@ -1,0 +1,33 @@
+def f(x):
+    return 3*x**4 + 4*x**3 - 12*x**2 - 5
+
+def df(x):
+    return 12*x**3 + 12*x**2 - 24*x
+
+def newton_method(initial_guess, tolerance, max_iterations):
+    x = initial_guess
+    for i in range(max_iterations):
+        if abs(f(x)) < tolerance:
+            return x
+        x = x - f(x) / df(x)
+    raise Exception("Не вдалося знайти розв'язок з заданою точністю та кількістю ітерацій")
+
+initial_guess = -2.0 #Початкове наближення
+
+tolerance = 0.0001 #Точність
+
+max_iterations = 100 #Максимальна кількість ітерацій
+
+results_newton = []
+
+# Знаходимо корені на відрізку [-2, 1] 
+for x0 in range(-2, 2):
+    try:
+        result = newton_method(x0, tolerance, max_iterations)
+        results_newton.append(result)
+    except:
+        pass
+
+print("Корені, знайдені методом Ньютона:")
+for i, result in enumerate(results_newton, start=1):
+    print(f"Корінь {i}: {result:.4f}")
