@@ -1,0 +1,51 @@
+def f(x):
+    return 3*x**4 + 4*x**3 - 12*x**2 - 5
+
+def df(x):
+    return 12*x**3 + 12*x**2 - 24*x
+
+def bisection_method(a, b, tolerance):
+    while (b - a) / 2 > tolerance:
+        midpoint = (a + b) / 2
+        if f(midpoint) == 0:
+            return midpoint
+        elif f(a) * f(midpoint) < 0:
+            b = midpoint
+        else:
+            a = midpoint
+    return (a + b) / 2
+
+def newton_method(x0, tolerance, max_iterations):
+    x = x0
+    for i in range(max_iterations):
+        if abs(f(x)) < tolerance:
+            return x
+        x = x - f(x) / df(x)
+    raise Exception("Не вдалося знайти розв'язок з заданою точністю та кількістю ітерацій")
+
+# Відрізок, на якому шукаємо корені
+a, b = -2, 1
+
+bisection_tolerance = 0.0001
+
+max_iterations = 100
+
+roots = []
+
+# Знаходимо корені на відрізку [-2, 1] 
+while a <= b:
+    try:
+        a_interval, b_interval = a, a + 1
+        x0 = bisection_method(a_interval, b_interval, bisection_tolerance)
+        
+        # Використовуємо метод Ньютона для уточнення кореня
+        result = newton_method(x0, bisection_tolerance, max_iterations)
+        
+        roots.append(result)
+        a += 1
+    except:
+        a += 1  # Якщо корінь не знайдено, переходимо до наступного інтервалу
+
+print("Знайдені корені:")
+for i, root in enumerate(roots, start=1):
+    print(f"Корінь {i}: {root:.4f}") 
